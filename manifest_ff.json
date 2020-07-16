@@ -1,0 +1,45 @@
+{
+    "name": "EncounterBeyond",
+    "description": "A simple extension to send digital rolls from D&D Beyond to EncounterPlus",
+    "manifest_version": 2,
+    "version": "0.1",
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "encounterbeyond@play5e.online"
+      }
+    },
+    "icons": {
+        "48": "encounter48.png",
+        "96": "encounter96.png"
+    },
+    "permissions": [
+      "https://380cb22c.us-south.apigw.appdomain.cloud/ddb/*",
+      "storage"
+      ],
+    "options_ui": {
+      "page": "options.html"
+    },
+    "page_action": {
+        "default_icon": {
+          "19": "encounter19.png",
+          "38": "encounter38.png"
+        },
+        "default_title": "EncounterBeyond",
+        "browser_style": true,
+        "default_popup": "options.html",
+        "show_matches": [
+            "https://*.dndbeyond.com/profile/*/characters/*"
+            ]
+    },
+    "content_scripts": [
+      {
+        "matches": [
+            "https://*.dndbeyond.com/profile/*/characters/*"
+            ],
+        "run_at": "document_start",
+        "js": [
+            "rollgrabber.js"
+            ]
+      }
+      ]
+}

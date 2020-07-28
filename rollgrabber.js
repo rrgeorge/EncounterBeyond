@@ -7,11 +7,9 @@ new MutationObserver(function mut (mutation,observer) {
 	  	if (!items.encounterRemoteHost.startsWith('http'))  {
 	  		return
 	  	}
-	  
-console.log(mutation);
 	for (let i=0;i<mutation.length;i++) {
 		for (let m=0;m<mutation[i].addedNodes.length;m++) {		
-			var results = mutation[i].addedNodes[m].getElementsByClassName('dice_result');
+			let results = mutation[i].addedNodes[m].getElementsByClassName('dice_result');
 			if (results.length > 0) {
 				let character_name = document.getElementsByClassName('ddbc-character-name')[0].textContent;
 				let latest_roll = results[results.length - 1];
@@ -43,7 +41,44 @@ console.log(mutation);
 				xhr.withCredentials = true;
 				xhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": rolljson }));
 				return;
-  		}
+  			}
+  			results = mutation[i].addedNodes[m].getElementsByClassName('ct-spell-detail__description');
+  			let actiontype = "spell";
+  			let actionname = ""
+  			if (results[0]) {
+  				actionname = mutation[i].addedNodes[m].getElementsByClassName('ddbc-spell-name')[0].textContent;
+  			} else {
+  				results = mutation[i].addedNodes[m].getElementsByClassName('ct-action-detail__description');
+  				if (results[0]) {
+  					actiontype = "action";
+  					actionname = mutation[i].addedNodes[m].getElementsByClassName('ddbc-action-name')[0].textContent;
+  				}
+  			}
+			if (results.length > 0 && !document.getElementById('sendTextToEncounter')) {
+				let sendtoEDiv = document.createElement("div");
+				sendtoEDiv.style.textAlign = "right";
+				sendtoEDiv.style.marginTop = 10;
+				let sendtoEButton = document.createElement("button");
+				sendtoEButton.id = 'sendTextToEncounter';
+				sendtoEButton.classList.add('ct-theme-button','ct-theme-button--filled','ct-theme-button--interactive','ct-button','character-button');
+				sendtoEButton.innerText = 'Share on EncounterPlus';
+				sendtoEButton.style.textAlign = "right";
+				let character_name = document.getElementsByClassName('ddbc-character-name')[0].textContent;
+				let msgjson = {
+					"source": character_name + " shared the " + actiontype + ": \"" + actionname + "\"",
+					"type":	"chat",
+					"content": results[0].textContent
+					};
+				sendtoEButton.addEventListener('click',function(){
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', 'https://380cb22c.us-south.apigw.appdomain.cloud/ddb/dice', true);
+					xhr.setRequestHeader("Content-type", "application/json");
+					xhr.withCredentials = true;
+					xhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": msgjson }));
+					});
+				results[0].appendChild(sendtoEDiv);
+				sendtoEDiv.appendChild(sendtoEButton);
+			}
 		}
 	}
 	});

@@ -2,7 +2,7 @@
     "name": "EncounterBeyond",
     "description": "A simple extension to send digital rolls from D&D Beyond to EncounterPlus",
     "manifest_version": 2,
-    "version": "0.1",
+    "version": "0.2",
     "icons": {
         "48": "encounter48.png",
         "96": "encounter96.png"

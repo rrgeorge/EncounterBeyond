@@ -1,8 +1,8 @@
-
 new MutationObserver(function mut (mutation,observer) {
 	chrome.storage.local.get({
 	    encounterRemoteHost: '',
-	    encounterSend: false
+	    sendVM: false,
+	    vmList: ''
 	  }, function(items) {
 	  	if (!items.encounterRemoteHost.startsWith('http'))  {
 	  		return
@@ -28,18 +28,36 @@ new MutationObserver(function mut (mutation,observer) {
 										"name":	roll_title
 								}
 						};
-				if (roll_type != "roll") {
-					if (roll_type == "to hit") {
-						rolljson.content.type = "attack";
-					} else {
-						rolljson.content.type = roll_type;
-					}
+				if (["check","save","attack","damage"].includes(roll_type)) {
+					rolljson.content.type = roll_type;
+				} else if (roll_type == "to hit") {
+					rolljson.content.type = "attack";
 				}
 				var xhr = new XMLHttpRequest();
 				xhr.open('POST', 'https://380cb22c.us-south.apigw.appdomain.cloud/ddb/dice', true);
 				xhr.setRequestHeader("Content-type", "application/json");
 				xhr.withCredentials = true;
+				
+				if (roll_title.toLowerCase() == "vicious mockery" && items.sendVM) {
+					xhr.onload = function () {
+						let vmList = items.vmList.split("\n")
+						if (vmList.length > 0) {
+							let msgjson = {
+								"source": character_name,
+								"type":	"chat",
+								"content": '"'+vmList[Math.floor(Math.random()*vmList.length)]+'"'
+							};
+							var vmxhr = new XMLHttpRequest();
+							vmxhr.open('POST', 'https://380cb22c.us-south.apigw.appdomain.cloud/ddb/dice', true);
+							vmxhr.setRequestHeader("Content-type", "application/json");
+							vmxhr.withCredentials = true;
+							vmxhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": msgjson }));
+						}
+					}
+				}
+				
 				xhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": rolljson }));
+
 				return;
   			}
   			results = mutation[i].addedNodes[m].getElementsByClassName('ct-spell-detail__description');
@@ -67,7 +85,7 @@ new MutationObserver(function mut (mutation,observer) {
 				let msgjson = {
 					"source": character_name + " shared the " + actiontype + ": \"" + actionname + "\"",
 					"type":	"chat",
-					"content": results[0].textContent
+					"content": results[0].innerText
 					};
 				sendtoEButton.addEventListener('click',function(){
 					var xhr = new XMLHttpRequest();

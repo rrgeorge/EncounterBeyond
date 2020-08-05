@@ -33,31 +33,22 @@ new MutationObserver(function mut (mutation,observer) {
 				} else if (roll_type == "to hit") {
 					rolljson.content.type = "attack";
 				}
-				var xhr = new XMLHttpRequest();
-				xhr.open('POST', 'https://380cb22c.us-south.apigw.appdomain.cloud/ddb/dice', true);
-				xhr.setRequestHeader("Content-type", "application/json");
-				xhr.withCredentials = true;
-				
+				var msgjson = null;
 				if (roll_title.toLowerCase() == "vicious mockery" && items.sendVM) {
-					xhr.onload = function () {
-						let vmList = items.vmList.split("\n")
-						if (vmList.length > 0) {
-							let msgjson = {
-								"source": character_name,
-								"type":	"chat",
-								"content": '"'+vmList[Math.floor(Math.random()*vmList.length)]+'"'
-							};
-							var vmxhr = new XMLHttpRequest();
-							vmxhr.open('POST', 'https://380cb22c.us-south.apigw.appdomain.cloud/ddb/dice', true);
-							vmxhr.setRequestHeader("Content-type", "application/json");
-							vmxhr.withCredentials = true;
-							vmxhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": msgjson }));
-						}
+					let vmList = items.vmList.split("\n")
+					if (vmList.length > 0) {
+						msgjson = {
+							"source": character_name,
+							"type":	"chat",
+							"content": '"'+vmList[Math.floor(Math.random()*vmList.length)]+'"'							};
 					}
 				}
-				
-				xhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": rolljson }));
-
+				chrome.runtime.sendMessage({
+					"message":	"sendToEncounter",
+					"host":		items.encounterRemoteHost,
+					"json":		rolljson,
+					"also":		msgjson
+					});
 				return;
   			}
   			results = mutation[i].addedNodes[m].getElementsByClassName('ct-spell-detail__description');
@@ -88,11 +79,12 @@ new MutationObserver(function mut (mutation,observer) {
 					"content": results[0].innerText
 					};
 				sendtoEButton.addEventListener('click',function(){
-					var xhr = new XMLHttpRequest();
-					xhr.open('POST', 'https://380cb22c.us-south.apigw.appdomain.cloud/ddb/dice', true);
-					xhr.setRequestHeader("Content-type", "application/json");
-					xhr.withCredentials = true;
-					xhr.send(JSON.stringify({"relayto":items.encounterRemoteHost, "data": msgjson }));
+					chrome.runtime.sendMessage({
+						"message":	"sendToEncounter",
+						"host":		items.encounterRemoteHost,
+						"json":		msgjson,
+						"also":		null
+						});
 					});
 				results[0].appendChild(sendtoEDiv);
 				sendtoEDiv.appendChild(sendtoEButton);

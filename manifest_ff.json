@@ -2,7 +2,7 @@
     "name": "EncounterBeyond",
     "description": "A simple extension to send digital rolls from D&D Beyond to EncounterPlus",
     "manifest_version": 2,
-    "version": "0.3",
+    "version": "0.4",
     "browser_specific_settings": {
       "gecko": {
         "id": "encounterbeyond@play5e.online"
@@ -13,11 +13,15 @@
         "96": "encounter96.png"
     },
     "permissions": [
-      "https://380cb22c.us-south.apigw.appdomain.cloud/ddb/*",
+      "*://*/api/messages",
       "storage"
       ],
     "options_ui": {
       "page": "options.html"
+    },
+    "background": {
+    "scripts": ["background.js"],
+    "persistent": true
     },
     "page_action": {
         "default_icon": {

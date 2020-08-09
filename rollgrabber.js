@@ -33,7 +33,14 @@ new MutationObserver(function mut (mutation,observer) {
 				} else if (roll_type == "to hit") {
 					rolljson.content.type = "attack";
 				}
-				let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];				if (dicetoolbar) {				    let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);				    if (color) {				        let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);				        rolljson.color = colorHex;				    }				}
+				let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];
+				if (dicetoolbar) {
+					let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+					if (color) {
+						let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
+						rolljson.color = colorHex;
+					}
+				}
 				var msgjson = null;
 				if (roll_title.toLowerCase() == "vicious mockery" && items.sendVM) {
 					let vmList = items.vmList.split("\n")
@@ -43,7 +50,14 @@ new MutationObserver(function mut (mutation,observer) {
 							"type":	"chat",
 							"content": '"'+vmList[Math.floor(Math.random()*vmList.length)]+'"'							};
 					}
-					let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];					if (dicetoolbar) {					    let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);					    if (color) {					        let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);					        msgjson.color = colorHex;					    }					}
+					let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];
+					if (dicetoolbar) {
+						let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+						if (color) {
+							let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
+							msgjson.color = colorHex;
+						}
+					}
 				}
 				chrome.runtime.sendMessage({
 					"message":	"sendToEncounter",
@@ -80,7 +94,14 @@ new MutationObserver(function mut (mutation,observer) {
 					"type":	"chat",
 					"content": results[0].innerText
 					};
-				let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];				if (dicetoolbar) {				    let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);				    if (color) {				        let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);				        msgjson.color = colorHex;				    }				}
+				let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];
+				if (dicetoolbar) {
+					let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+					if (color) {
+						let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
+						msgjson.color = colorHex;
+					}
+				}
 				sendtoEButton.addEventListener('click',function(){
 					chrome.runtime.sendMessage({
 						"message":	"sendToEncounter",

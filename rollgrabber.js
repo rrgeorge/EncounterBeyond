@@ -21,6 +21,10 @@ new MutationObserver(function mut (mutation,observer) {
 				let roll_breakdown = latest_roll.getElementsByClassName('dice_result__info__breakdown')[0].textContent;
 				let roll_total = latest_roll.getElementsByClassName('dice_result__total-result')[0].textContent;
 				let roll_type = latest_roll.getElementsByClassName('dice_result__rolltype')[0].textContent;
+				let roll_header = latest_roll.getElementsByClassName("dice_result__total-header");
+				if (roll_header.length > 0) {
+					roll_title += ` (${roll_header[0].textContent})`;
+				}
 				let rolljson = {
 								"source": character_name,
 								"type":	"roll",
@@ -35,6 +39,9 @@ new MutationObserver(function mut (mutation,observer) {
 					rolljson.content.type = roll_type;
 				} else if (roll_type == "to hit") {
 					rolljson.content.type = "attack";
+					if (document.getElementsByClassName('ddbc-combat-attack--crit').length > 0) {
+						rolljson.content.name += " (CRIT)";
+					}
 				}
 				let dicetoolbar = document.getElementsByClassName('dice-toolbar')[0];
 				if (dicetoolbar) {

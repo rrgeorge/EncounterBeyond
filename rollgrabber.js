@@ -8,7 +8,10 @@ new MutationObserver(function mut (mutation,observer) {
 	  		return
 	  	}
 	for (let i=0;i<mutation.length;i++) {
-		for (let m=0;m<mutation[i].addedNodes.length;m++) {		
+		for (let m=0;m<mutation[i].addedNodes.length;m++) {
+			if (mutation[i].addedNodes[m].nodeType != Node.ELEMENT_NODE) {
+				continue;
+			}
 			let results = mutation[i].addedNodes[m].getElementsByClassName('dice_result');
 			if (results.length > 0) {
 				let character_name = document.getElementsByClassName('ddbc-character-name')[0].textContent;
@@ -37,7 +40,7 @@ new MutationObserver(function mut (mutation,observer) {
 				if (dicetoolbar) {
 					let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 					if (color) {
-						let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
+						let colorHex = "#" + ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
 						rolljson.color = colorHex;
 					}
 				}
@@ -54,7 +57,7 @@ new MutationObserver(function mut (mutation,observer) {
 					if (dicetoolbar) {
 						let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 						if (color) {
-							let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
+							let colorHex = "#" + ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
 							msgjson.color = colorHex;
 						}
 					}
@@ -98,7 +101,7 @@ new MutationObserver(function mut (mutation,observer) {
 				if (dicetoolbar) {
 					let color = window.getComputedStyle(dicetoolbar).backgroundColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
 					if (color) {
-						let colorHex = ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
+						let colorHex = "#" + ("0"+parseInt(color[1]).toString(16)).slice(-2) + ("0"+parseInt(color[2]).toString(16)).slice(-2) + ("0"+parseInt(color[3]).toString(16)).slice(-2);
 						msgjson.color = colorHex;
 					}
 				}

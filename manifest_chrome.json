@@ -28,13 +28,15 @@
         "browser_style": true,
         "default_popup": "options.html",
         "show_matches": [
-            "https://*.dndbeyond.com/profile/*/characters/*"
+            "https://*.dndbeyond.com/profile/*/characters/*",
+            "https://*.dndbeyond.com/characters/*"
             ]
     },
     "content_scripts": [
       {
         "matches": [
-            "https://*.dndbeyond.com/profile/*/characters/*"
+            "https://*.dndbeyond.com/profile/*/characters/*",
+            "https://*.dndbeyond.com/characters/*"
             ],
         "run_at": "document_end",
         "js": [
@@ -43,7 +45,7 @@
       },
       {
         "matches": [
-            "*://client.encounter.plus/*"
+            "*://*/client/"
             ],
         "run_at": "document_end",
         "js": [

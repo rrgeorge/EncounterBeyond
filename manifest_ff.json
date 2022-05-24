@@ -2,7 +2,7 @@
     "name": "EncounterBeyond",
     "description": "A simple extension to send digital rolls from D&D Beyond to EncounterPlus",
     "manifest_version": 2,
-    "version": "0.6",
+    "version": "0.7",
     "browser_specific_settings": {
       "gecko": {
         "id": "encounterbeyond@play5e.online"
@@ -32,13 +32,15 @@
         "browser_style": true,
         "default_popup": "options.html",
         "show_matches": [
-            "https://*.dndbeyond.com/profile/*/characters/*"
+            "https://*.dndbeyond.com/profile/*/characters/*",
+            "https://*.dndbeyond.com/characters/*"
             ]
     },
     "content_scripts": [
       {
         "matches": [
-            "https://*.dndbeyond.com/profile/*/characters/*"
+            "https://*.dndbeyond.com/profile/*/characters/*",
+            "https://*.dndbeyond.com/characters/*"
             ],
         "run_at": "document_end",
         "js": [
@@ -47,7 +49,7 @@
       },
       {
         "matches": [
-            "*://client.encounter.plus/*"
+            "*://*/client/"
             ],
         "run_at": "document_end",
         "js": [

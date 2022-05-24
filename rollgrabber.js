@@ -1,3 +1,4 @@
+console.log("EncounterBeyond")
 new MutationObserver(function mut (mutation,observer) {
 	chrome.storage.local.get({
 	    encounterRemoteHost: '',
@@ -16,7 +17,7 @@ new MutationObserver(function mut (mutation,observer) {
 			if (results.length > 0) {
 				let character_name = document.getElementsByClassName('ddbc-character-name')[0].textContent;
 				let latest_roll = results[results.length - 1];
-				let roll_title = latest_roll.getElementsByClassName('dice_result__info__rolldetail')[0].textContent.split(':')[0];
+				let roll_title = latest_roll.getElementsByClassName('dice_result__info__title')[0].textContent.split(':')[0];
 				let roll_notation = latest_roll.getElementsByClassName('dice_result__info__dicenotation')[0].textContent;
 				let roll_breakdown = latest_roll.getElementsByClassName('dice_result__info__breakdown')[0].textContent;
 				let roll_total = latest_roll.getElementsByClassName('dice_result__total-result')[0].textContent;
@@ -32,7 +33,7 @@ new MutationObserver(function mut (mutation,observer) {
 										"formula": roll_notation,
 										"result": Number(roll_total),
 										"detail": roll_breakdown,
-										"name":	roll_title
+										"name":	roll_title?.trim()
 								}
 						};
 				if (["check","save","attack","damage"].includes(roll_type)) {

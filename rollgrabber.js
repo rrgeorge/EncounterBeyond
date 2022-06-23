@@ -15,7 +15,7 @@ new MutationObserver(function mut (mutation,observer) {
 			}
 			let results = mutation[i].addedNodes[m].getElementsByClassName('dice_result');
 			if (results.length > 0) {
-				let character_name = document.getElementsByClassName('ddbc-character-name')[0].textContent;
+				let character_name = document.querySelector(".ct-character-header-info")?.querySelector("h1")?.textContent || "Player Character"
 				let latest_roll = results[results.length - 1];
 				let roll_title = latest_roll.getElementsByClassName('dice_result__info__title')[0].textContent.split(':')[0];
 				let roll_notation = latest_roll.getElementsByClassName('dice_result__info__dicenotation')[0].textContent;
@@ -99,7 +99,7 @@ new MutationObserver(function mut (mutation,observer) {
 				sendtoEButton.classList.add('ct-theme-button','ct-theme-button--filled','ct-theme-button--interactive','ct-button','character-button');
 				sendtoEButton.innerText = 'Share on EncounterPlus';
 				sendtoEButton.style.textAlign = "right";
-				let character_name = document.getElementsByClassName('ddbc-character-name')[0].textContent;
+				let character_name = document.querySelector(".ct-character-header-info")?.querySelector("h1")?.textContent || "Player Character"
 				let msgjson = {
 					"source": character_name + " shared the " + actiontype + ": \"" + actionname + "\"",
 					"type":	"chat",

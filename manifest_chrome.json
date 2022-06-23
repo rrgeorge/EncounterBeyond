@@ -1,25 +1,26 @@
 {
     "name": "EncounterBeyond",
     "description": "A simple extension to send digital rolls from D&D Beyond to EncounterPlus",
-    "manifest_version": 2,
-    "version": "0.6",
+    "manifest_version": 3,
+    "version": "0.8",
     "icons": {
         "48": "encounter48.png",
         "96": "encounter96.png"
     },
+    "host_permissions": [
+      "*://*/api/messages"
+    ],
     "permissions": [
-      "*://*/api/messages",
       "storage",
       "declarativeContent"
       ],
     "background": {
-    "scripts": ["background.js"],
-    "persistent": true
+    "service_worker": "background.js"
   },
     "options_ui": {
       "page": "options.html"
     },
-    "page_action": {
+    "action": {
         "default_icon": {
           "19": "encounter19.png",
           "38": "encounter38.png"
